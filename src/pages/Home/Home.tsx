@@ -5,6 +5,8 @@ import { ButtonGreen, ButtonOrange } from '../../components/Button'
 import { Container, ContentImg, ContentBtn } from './styles'
 
 export function Home() {
+
+  
   return (
     <Container >
       <ContentImg>
