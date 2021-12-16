@@ -3,12 +3,17 @@ import { Btn } from './styles'
 
 export function ButtonOrange() {
   return (
-    <Btn color='btnOrange'>text</Btn>
+    <Btn 
+    color='btnOrange'
+    type='button'
+    ></Btn>
   )
 }
 
 export function ButtonGreen() {
   return (
-    <Btn>text</Btn>
+    <Btn
+    type='button'
+    ></Btn>
   )
 }
