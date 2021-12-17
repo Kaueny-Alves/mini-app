@@ -1,12 +1,15 @@
 import React from 'react'
 import marcaImg from "../../assets/marca_mini_app.png"
 import responsiveImg from "../../assets/img_responsive.png"
-import { ButtonGreen, ButtonOrange } from '../../components/Button'
 import { Container, ContentImg, ContentBtn } from './styles'
 import { Link } from 'react-router-dom'
+import { Btn } from '../../global'
 
-export function Home() {
+interface homeProps {
+  children: string;
+}
 
+export function Home(props: homeProps) {
 
   return (
     <Container >
@@ -16,10 +19,10 @@ export function Home() {
       </ContentImg>
       <ContentBtn>
         <Link to={'/register'}>
-          <ButtonOrange />
+        <Btn color="orange">Criar Conta</Btn>
         </Link>
         <Link to={'/login'}>
-          <ButtonGreen />
+        <Btn color="greeny">Entrar</Btn>
         </Link>
       </ContentBtn>
     </Container>
