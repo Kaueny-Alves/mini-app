@@ -11,13 +11,15 @@ export const ContainerLogin = styled.div`
   height: 100vh;
 `;
 
-export const Card = styled.div`
+export const Card = styled.form`
   display: flex;
   flex-direction: column;
   align-items: center;
   background: var(--cream);
   width: 500px;
   height: 500px;
+  border-radius: 5px;
+  box-shadow: 0px 6px 0px 0px rgba(0, 0, 0, 0.2) ;
 `;
 
 export const ContentInput = styled.div`
@@ -34,6 +36,10 @@ export const Input = styled.input`
   margin: 5px;
   width: 300px;
   height: 40px;
+  font-size:1rem;
+  padding-left: 10px;
+  border-radius: 5px;
+  border:1px solid #b4b4b4;
 `;
 
 export const ContentImg = styled.div`
@@ -57,4 +63,9 @@ export const ContentBtn = styled.div`
   display: flex;
   align-items: center;
   margin-top: 10px;
+`;
+
+export const Error = styled.span`
+  padding: 10px;
+  color: var(--brown);
 `;
