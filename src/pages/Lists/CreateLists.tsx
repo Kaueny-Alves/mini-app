@@ -7,6 +7,7 @@ import editar from "../../assets/icone_editar.png";
 import excluir_lista from "../../assets/icone_deletar_lista.png";
 import excluir_tarefa from "../../assets/icone_deletar_tarefa-subtarefa.png";
 import TextField from '@material-ui/core/TextField';
+import { Header } from "../../components/Header";
 
 interface ILists {
   id: string;
@@ -54,6 +55,8 @@ export function CreateLists() {
   }
 
   return (
+    <>
+    <Header/>
     <Container>
       <h2 className="text">Criar Lista</h2>
       <Form className={""} noValidate autoComplete="off">
@@ -115,6 +118,7 @@ export function CreateLists() {
       />
 
     </Container>
+    </>
   )
 }
 
