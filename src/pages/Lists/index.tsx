@@ -7,6 +7,7 @@ import editar from "../../assets/icone_editar.png";
 import excluir_lista from "../../assets/icone_deletar_lista.png";
 import excluir_tarefa from "../../assets/icone_deletar_tarefa-subtarefa.png";
 import { Container, ContentTitle, ContainerList } from './styles';
+import { Link } from 'react-router-dom';
 
 
 
@@ -64,9 +65,11 @@ export function Lists() {
       <Container>
         <ContentTitle>
           <h2 className="text">Listas</h2>
+          <Link to={'/create'}>
           <button className="btn" >
             <img src={adicionar} alt="imagem de adicionar" />
           </button>
+          </Link>
         </ContentTitle>
         {lists && lists.map((list) => {
           return <ContainerList>
