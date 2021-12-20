@@ -19,7 +19,11 @@ export const Card = styled.form`
   width: 500px;
   height: 500px;
   border-radius: 5px;
-  box-shadow: 0px 6px 0px 0px rgba(0, 0, 0, 0.2) ;
+  box-shadow: 0px 6px 0px 0px rgba(0, 0, 0, 0.2);
+  @media (max-width: 720px) {
+    width: 350px;
+    height: 400px;
+  }
 `;
 
 export const ContentInput = styled.div`
@@ -36,10 +40,10 @@ export const Input = styled.input`
   margin: 5px;
   width: 300px;
   height: 40px;
-  font-size:1rem;
+  font-size: 1rem;
   padding-left: 10px;
   border-radius: 5px;
-  border:1px solid #b4b4b4;
+  border: 1px solid #b4b4b4;
 `;
 
 export const ContentImg = styled.div`
@@ -47,16 +51,19 @@ export const ContentImg = styled.div`
   flex-direction: column;
   align-items: center;
   margin: 20px;
-
-  p{
+  
+  p {
     font-size: 1.6rem;
     margin: 30px;
   }
 `;
 
 export const ContentSeta = styled.div`
- width: 490px;
- padding: 10px;
+  width: 490px;
+  padding: 10px;
+  @media (max-width: 720px) {
+    width: 340px;
+  }
 `;
 
 export const ContentBtn = styled.div`

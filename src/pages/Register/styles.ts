@@ -20,6 +20,10 @@ export const Card = styled.form`
   height: 500px;
   border-radius: 5px;
   box-shadow: 0px 6px 0px 0px rgba(0, 0, 0, 0.2) ;
+  @media (max-width: 720px) {
+    width: 350px;
+    height: 500px;
+  }
 `;
 
 export const ContentInput = styled.div`
@@ -57,6 +61,9 @@ export const ContentImg = styled.div`
 export const ContentSeta = styled.div`
  width: 490px;
  padding: 10px;
+ @media (max-width: 720px) {
+    width: 340px;
+  }
 `;
 
 export const ContentBtn = styled.div`

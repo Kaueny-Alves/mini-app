@@ -31,22 +31,13 @@ export const GlobalStyle = createGlobalStyle`
     -webkit-font-smoothing: antialiased;
   } 
 
-  body, input, textarea, button {
+  body, input, textarea, button, h1, h2 {
     font-family: "SF-Pro-Display", sans-serif;
     font-weight: 400;
   }
 
-  h1 {
-    font-weight: 600;
-  }
-
   button {
     cursor: pointer;
-  }
-
-  [disabled] {
-    opacity: 0.6;
-    cursor: not-allowed;
   }
 
   a{

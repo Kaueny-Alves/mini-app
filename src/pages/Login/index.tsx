@@ -86,7 +86,7 @@ export function Login() {
         <ContentBtn>
           <Btn color="greeny" onClick={handleButton}>Entrar</Btn>
         </ContentBtn>
-        <Error>{status === 'error' ? <p>Todos os campos devem ser preenchidos e a senha deve ter no mínimo 6 caracteres!</p> : ""}</Error>
+        <Error>{status === 'error' ? <p>O email precisa ser válido e a senha deve ter no mínimo 6 caracteres!</p> : ""}</Error>
       </Card>
     </ContainerLogin>
   )
