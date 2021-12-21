@@ -18,19 +18,19 @@ export function Register() {
 
   const navigate = useNavigate();
 
-  const handleEmail = (e: any) => {
+  const handleEmail = (e) => {
     setEmail(e.target.value);
   };
 
-  const handlePassword = (e: any) => {
+  const handlePassword = (e) => {
     setPassword(e.target.value);
   };
 
-  const handleName = (e: any) => {
+  const handleName = (e) => {
     setName(e.target.value);
   };
 
-  async function handleButton(e: MouseEvent<HTMLButtonElement>) {
+  async function handleButton(e) {
     e.preventDefault();
     if (await validate()) {
       const saveUser = true;

@@ -5,11 +5,8 @@ import { Container, ContentImg, ContentBtn } from './styles'
 import { Link } from 'react-router-dom'
 import { Btn } from '../../global'
 
-interface homeProps {
-  children: string;
-}
 
-export function Home(props: homeProps) {
+export function Home(props) {
 
   return (
     <Container >

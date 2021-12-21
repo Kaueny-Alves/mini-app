@@ -15,15 +15,15 @@ export function Login() {
 
   const navigate = useNavigate()
 
-  const handlePassword = (e: any) => {
+  const handlePassword = (e) => {
     setPassword(e.target.value);
   };
 
-  const handleName = (e: any) => {
+  const handleName = (e) => {
     setName(e.target.value);
   };
 
-  async function handleButton(e: MouseEvent<HTMLButtonElement>) {
+  async function handleButton(e) {
     e.preventDefault();
     if (await validate()) {
       const saveUser = true;
