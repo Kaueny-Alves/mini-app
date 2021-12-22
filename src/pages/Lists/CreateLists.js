@@ -8,6 +8,7 @@ import excluir_lista from "../../assets/icone_deletar_lista.png";
 import excluir_tarefa from "../../assets/icone_deletar_tarefa-subtarefa.png";
 import TextField from "@material-ui/core/TextField";
 import { Header } from "../../components/Header";
+import { Tasks } from "./Tasks";
 
 export function CreateLists() {
   const [lists, setLists] = useState([
@@ -67,13 +68,13 @@ export function CreateLists() {
       <Container>
         <h2 className="text">Criar Lista</h2>
         <Form className={""} noValidate autoComplete="off">
-          <TextField
+          <Tasks
             name="nameList"
             placeholder="Digite o nome da lista..."
             variant="outlined"
             onChange={(e) => setLists({ nameList: e.target.value })}
           />
-          <TextField
+          <Tasks
             name="nameTask"
             placeholder="Adicionar tarefa"
             variant="outlined"

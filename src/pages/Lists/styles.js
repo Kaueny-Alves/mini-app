@@ -9,6 +9,7 @@ export const Container = styled.div`
   height: 100%;
   width: 100%;
   .text {
+    justify-items: start;
     color: var(--brown);
   }
   .btn {
@@ -59,6 +60,7 @@ export const ContentList = styled.div`
     padding-left: 10px;
     color: #574437;
   }
+
   .tasks {
     display: flex;
     border-bottom: 1px solid var(--green);
@@ -67,10 +69,6 @@ export const ContentList = styled.div`
     
   }
 
-  .sub-tasks {
-    display: flex;
-    margin-left: 30px;
-  }
 `;
 
 export const ContainerList = styled.div`
@@ -95,9 +93,24 @@ export const Form = styled.form`
 `;
 
 export const ContentBtn = styled.div`
+   display: flex;
+   align-items: center;
+   justify-content: space-between;
    margin-right: 30px;
 `;
 
-export const ContentBtnSub = styled.div`
-  padding-right: 50px;
+export const ContentSub = styled.div`
+ padding: 5px 0px 0px 5px;
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  margin-right: 30px;
+  .sub-tasks {
+    display: flex;
+    margin-left: 30px;
+    
+  }
+  
 `;
+
+

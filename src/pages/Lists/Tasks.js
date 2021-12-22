@@ -15,14 +15,13 @@ const useStyles = makeStyles((theme) => ({
     borderRadius: "5px",
     border: "1px solid var(--orange)",
     "& .MuiTextField-root": {
-     
       margin: theme.spacing(1),
       width: "25ch",
     }
   }
 }));
 
-export function Tasks({ placeholder, name, onClick }) {
+export function Tasks({ placeholder, name, onClick, value }) {
   const classes = useStyles();
 
   return (
@@ -31,17 +30,17 @@ export function Tasks({ placeholder, name, onClick }) {
         className={classes.root}
         required
         autoFocus={false}
+        value={value}
         name={name}
         placeholder={placeholder}
         InputProps={{
+          disableUnderline: true,
           endAdornment: (
             <button className="btn" onClick={onClick}>
               <img src={adicionar} alt="imagem de adicionar" />
             </button>
           ),
-        },
-        { disableUnderline: true }
-      }
+        }}
       />
     </div>
   );

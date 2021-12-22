@@ -19,6 +19,7 @@ import {
 import { Link } from "react-router-dom";
 
 export function Lists() {
+  const [status, setStatus] = useState(false);
   const [lists, setLists] = useState([
     {
       id: "1",
@@ -44,31 +45,40 @@ export function Lists() {
         },
       ],
     },
-    // {
-    //   id: "2",
-    //   nameList: "Lista 2",
-    //   tasks: [{
-    //     id: "",
-    //     nameTask: "",
-    //     subTarefa: [{
-    //       id: "",
-    //       Subtarefa: ""
-    //     }]
-    //   }]
-    // },
-    // {
-    //   id: "3",
-    //   nameList: "Lista 3",
-    //   tasks: [{
-    //     id: "",
-    //     nameTask: "",
-    //     subTarefa: [{
-    //       id: "",
-    //       Subtarefa: ""
-    //     }]
-    //   }]
-    //  }
+    {
+      id: "2",
+      nameList: "Lista 2",
+      tasks: [{}],
+    },
+    {
+      id: "3",
+      nameList: "Lista 3",
+      tasks: [
+        {
+          id: "",
+          nameTask: "",
+          subTarefa: [
+            {
+              id: "",
+              Subtarefa: "",
+            },
+          ],
+        },
+      ],
+    },
   ]);
+
+  const handleCancelButton = (id) => {
+    console.log("clicou")
+  };
+
+  const handleEditButton = (id) => {
+    if (status) {
+      setStatus(false);
+    } else {
+      setStatus(true);
+    }
+  };
 
   return (
     <>
@@ -82,7 +92,7 @@ export function Lists() {
             </button>
           </Link>
         </ContentTitle>
-        {lists.length > 0 &&
+        {lists &&
           lists.map((list) => {
             return (
               <ContainerList>
@@ -91,53 +101,88 @@ export function Lists() {
                     <button className="btn">
                       <img src={icone_lista} alt="adicionar" />
                     </button>
-                    <span>{list.nameList}</span>
+                    <span>
+                      {status ? (
+                        <Tasks
+                          placeholder={list.nameList}
+                          name="nameList"
+                          onClick
+                        />
+                      ) : (
+                        list.nameList
+                      )}
+                    </span>
                   </div>
                   <div>
                     <button className="btn">
-                      <img src={editar} alt="editar" />
+                      <img
+                        src={editar}
+                        alt="editar"
+                        onClick={() => {
+                          handleEditButton(list.id);
+                        }}
+                      />
                     </button>
                     <button className="btn">
-                      <img src={excluir_lista} alt="excluir" />
+                      <img
+                        src={excluir_lista}
+                        alt="excluir"
+                        onClick={() => {
+                          handleCancelButton(list.id);
+                        }}
+                      />
                     </button>
                   </div>
                 </ContentList>
-                <Tasks placeholder="Adicionar tarefa" name="addTasks" onClick />
-                {list.tasks.length > 0 &&
+                {status && (
+                  <Tasks
+                    placeholder="Adicionar tarefa"
+                    name="addTasks"
+                    onClick
+                  />
+                )}
+                {list.tasks &&
                   list.tasks.map((task) => (
                     <>
-                      <ContentList>
-                        <div className="tasks">
-                          <input
-                            type="checkbox"
-                            value={task.id}
-                            className="sub"
-                          />
-                          <p>{task.nameTask}</p>
-                        </div>
-                        <ContentBtn>
-                          <button className="btn">
-                            <img src={excluir_tarefa} alt="excluir" />
-                          </button>
-                        </ContentBtn>
-                      </ContentList>
-                      <ul className="separator">
-                        {task.subTarefa.length > 0 &&
-                          task.subTarefa.map((sub) => (
-                            <ContentBtn>
-                              <SubTasks
-                                value={sub.id}
-                                textList={sub.Subtarefa}
-                                src={excluir_tarefa}
-                                alt="excluir"
+                      {task.nameTask ? (
+                        <>
+                          <ContentList>
+                            <div className="tasks">
+                              <input
+                                type="checkbox"
+                                value={task.id}
+                                className="sub"
                               />
+                              <p>{task.nameTask}</p>
+                            </div>
+                            <ContentBtn>
+                              <button className="btn">
+                                <img src={excluir_tarefa} alt="excluir"  onClick={()=>{handleCancelButton(task.id)}}/>
+                              </button>
                             </ContentBtn>
-                          ))}
-                        <Tasks
-                          placeholder="Adicionar subtarefa"
-                          name="addSubTasks"
-                        />
-                      </ul>
+                          </ContentList>
+                          <ul className="separator">
+                            {task.subTarefa &&
+                              task.subTarefa.map((sub) => (
+                                <SubTasks
+                                  value={sub.id}
+                                  textList={sub.Subtarefa}
+                                  src={excluir_tarefa}
+                                  alt="excluir"
+                                  onClick={()=>{handleCancelButton(sub.id)}}
+                                />
+                              ))}
+                            {status && (
+                              <Tasks
+                                placeholder="Adicionar subtarefa"
+                                name="addSubTasks"
+                              />
+                            )}
+                          </ul>
+                        </>
+                      ) : (
+                        ""
+                      )}
                     </>
                   ))}
               </ContainerList>
