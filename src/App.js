@@ -1,3 +1,4 @@
+import React from 'react';
 import { GlobalStyle } from './global';
 import { BrowserRouter, Route, Routes } from "react-router-dom";
 import { Lists } from './pages/Lists';
@@ -14,7 +15,7 @@ export function App() {
     <BrowserRouter>
       <GlobalStyle />
       <Routes>
-        <Route path="/" element={<Home children={''} />} />
+        <Route path="/" exact element={<Home children={''} />} />
         <Route path="/login" element={<Login />} />
         <Route path="/register" element={<Register />} />
         <Route path="/lists" element={<Lists  />} />

@@ -1,4 +1,4 @@
-import React, { useState, MouseEvent } from "react";
+import React, { useState} from "react";
 import { Card, ContainerRegister, ContentBtn, ContentImg, ContentInput, ContentSeta, Input, Error } from "./styles";
 import { useNavigate } from "react-router-dom";
 import marcaImg from "../../assets/marca_mini_app.png";

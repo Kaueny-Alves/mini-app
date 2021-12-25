@@ -1,3 +1,4 @@
+import React from 'react';
 import logoImg from "../../assets/logo.png"
 import avatarImg from "../../assets/avatar.png"
 import { Avatar, Container } from "./styles"

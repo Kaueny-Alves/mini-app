@@ -21,26 +21,20 @@ const useStyles = makeStyles((theme) => ({
   }
 }));
 
-export function Tasks({ placeholder, name, onClick, value }) {
+export function Tasks({ placeholder, name, onClick, value, onChange, InputProps }) {
   const classes = useStyles();
 
   return (
     <div>
       <TextField
         className={classes.root}
-        required
-        autoFocus={false}
+        required={true}
         value={value}
         name={name}
+        onChange={onChange}
         placeholder={placeholder}
-        InputProps={{
-          disableUnderline: true,
-          endAdornment: (
-            <button className="btn" onClick={onClick}>
-              <img src={adicionar} alt="imagem de adicionar" />
-            </button>
-          ),
-        }}
+        InputProps={InputProps}
+        onClick={onClick}
       />
     </div>
   );

@@ -1,4 +1,4 @@
-import React, { useEffect, MouseEvent, useState, ChangeEvent } from "react";
+import React, { useEffect, useState } from "react";
 import { Btn } from "../../global";
 import { Container, ContentBtn, Form } from "./styles";
 import adicionar from "../../assets/adicionar.png";
@@ -12,54 +12,60 @@ import { Tasks } from "./Tasks";
 
 export function CreateLists() {
   const [lists, setLists] = useState([
-    {
-      id: "",
-      nameList: "",
-      tasks: [
-        {
-          id: "",
-          nameTask: "",
-          subTarefa: [
-            {
-              id: "",
-              Subtarefa: "",
-            },
-          ],
-        },
-      ],
-    },
+    { id: "", name: "", tasks: [{ id: "", task: "" }] },
   ]);
   const [nameList, setNameList] = useState([]);
   const [nameTasks, setNameTasks] = useState([]);
+  const [status, setStatus] = useState(false);
 
-  useEffect(() => {
-    localStorage.setItem("nameList", JSON.stringify(nameList));
-    localStorage.setItem("nameTask", JSON.stringify(nameTasks));
-  }, [nameList, nameTasks]);
 
-  useEffect(() => {
-    const retrieveLists = JSON.parse(localStorage.getItem("nameList") || "{}");
-    const retrieveTasks = JSON.parse(localStorage.getItem("nameTask") || "{}");
-    setNameList(...nameList, retrieveLists);
-    setNameTasks(...nameTasks, retrieveTasks);
-    console.log(retrieveTasks, retrieveLists);
-  }, []);
-
-  const addTasks = (e) => {
-    e.preventDefault();
-    console.log("clicou");
-  };
-
-  function onChange(e) {
-    setLists({ ...lists, [e.target.name]: e.target.value });
+  function id() {
+    let randomized = Math.ceil(Math.random() * Math.pow(10, 5));
+    let digito = Math.ceil(Math.log(randomized));
+    while (digito > 10) {
+      digito = Math.ceil(Math.log(digito));
+    }
+    let uuid = `${randomized}-${digito}`;
+    return uuid;
   }
 
-  const creatList = (e) => {
-    e.preventDefault();
+  const editButton = (id) => {
+    if (status) {
+      setStatus(false);
+    } else {
+      setStatus(true);
+    }
   };
 
-  const createTask = (e) => {
+  function createList(e) {
     e.preventDefault();
+    if (nameList === "" && nameTasks === "") {
+      alert("Nome da Lista é obrigatório!!!");
+    } else {
+      let uuid = id();
+      localStorage.setItem("nameList", JSON.stringify(nameList));
+      localStorage.setItem("nameTasks", JSON.stringify(nameTasks));
+      localStorage.setItem("lists", JSON.stringify(lists));
+      setLists([
+        ...lists,
+        {
+          id: uuid,
+          name: nameList,
+          tasks: [{ id: uuid + 1, task: nameTasks }],
+        },
+      ]);
+      console.log("criou", lists);
+    }
+  }
+
+
+  const deleteList = (id) => {
+    const newList = lists.filter((item) => {
+      return item.id !== id;
+    });
+    setLists(newList);
+    localStorage.setItem("lists", JSON.stringify(newList));
+    console.log("deletou", newList);
   };
 
   return (
@@ -67,192 +73,98 @@ export function CreateLists() {
       <Header />
       <Container>
         <h2 className="text">Criar Lista</h2>
-        <Form className={""} noValidate autoComplete="off">
+        <Form className={"listForm"} autoComplete="off">
           <Tasks
+            required
             name="nameList"
             placeholder="Digite o nome da lista..."
             variant="outlined"
-            onChange={(e) => setLists({ nameList: e.target.value })}
+            onChange={(e) => {
+              setNameList(e.target.value);
+            }}
+            InputProps={{ disableUnderline: true }}
           />
           <Tasks
-            name="nameTask"
+            required
+            name="nameTasks"
             placeholder="Adicionar tarefa"
             variant="outlined"
-            onChange={(e) => setLists({ nameTask: e.target.value })}
+            onChange={(e) => {
+              setNameTasks(e.target.value);
+            }}
             InputProps={{
+              disableUnderline: true,
               endAdornment: (
-                <button className="btn" onClick={createTask}>
+                <button className="btn" >
                   <img src={adicionar} alt="imagem de adicionar" />
                 </button>
               ),
             }}
           />
+          
         </Form>
-
         <ContentBtn>
           <Btn color="greeny">Cancelar</Btn>
-          <Btn color="orange" onClick={addTasks}>
+          <Btn color="orange" onClick={createList}>
             Criar Lista
           </Btn>
         </ContentBtn>
 
-        <TextField
-          value={nameList}
-          InputProps={{
-            endAdornment: (
-              <>
-                <button className="btn" onClick={createTask}>
-                  <img src={editar} alt="imagem de adicionar" />
-                </button>
-                <button className="btn" onClick={createTask}>
-                  <img src={excluir_lista} alt="imagem de adicionar" />
-                </button>
-              </>
-            ),
-            startAdornment: (
-              <button className="btn" onClick={createTask}>
-                <img src={icone_lista} alt="imagem de adicionar" />
-              </button>
-            ),
-          }}
-        />
-        <TextField
-          value={nameTasks}
-          InputProps={{
-            endAdornment: (
-              <button className="btn" onClick={createTask}>
-                <img src={excluir_lista} alt="imagem de adicionar" />
-              </button>
-            ),
-          }}
-        />
+        {lists &&
+          lists.map((list) => {
+            return (
+              <div key={list.id}>
+                <TextField
+                  key={list.id}
+                  value={list.name}
+                  InputProps={{
+                    endAdornment: (
+                      <>
+                        <button className="btn">
+                          <img src={editar} alt="editar" onClick={editButton} />
+                        </button>
+                        <button className="btn">
+                          <img
+                            src={excluir_lista}
+                            alt="excluir"
+                            onClick={() => {
+                              deleteList(list.id);
+                            }}
+                          />
+                        </button>
+                      </>
+                    ),
+                    startAdornment: (
+                      <button className="btn">
+                        <img src={icone_lista} alt="icone lista" />
+                      </button>
+                    ),
+                  }}
+                />
+                {list &&
+                  list.tasks.map((name) => (
+                    <TextField
+                      key={name.id}
+                      value={name.task}
+                      InputProps={{
+                        endAdornment: (
+                          <button className="btn">
+                            <img
+                              src={excluir_tarefa}
+                              alt="excluir"
+                              onClick={() => {
+                                deleteList(id);
+                              }}
+                            />
+                          </button>
+                        ),
+                      }}
+                    />
+                  ))}
+              </div>
+            );
+          })}
       </Container>
     </>
   );
 }
-
-// import React, { useEffect, MouseEvent, useState, ChangeEvent } from "react";
-// import { Btn } from '../../global'
-// import { Container, ContentBtn, Form } from './styles'
-// import adicionar from "../../assets/adicionar.png";
-// import icone_lista from "../../assets/icone_lista.png";
-// import editar from "../../assets/icone_editar.png";
-// import excluir_lista from "../../assets/icone_deletar_lista.png";
-// import excluir_tarefa from "../../assets/icone_deletar_tarefa-subtarefa.png";
-// import TextField from '@material-ui/core/TextField';
-// import { Header } from "../../components/Header";
-
-// export function CreateLists() {
-
-//   const [lists, setLists] = useState(
-//     {
-//       nameList: "",
-//       nameTask: "",
-//     }
-//   );
-//   const [nameList, setNameList] = useState([])
-//   const [nameTasks, setNameTasks] = useState([])
-
-//   useEffect(() => {
-//     localStorage.setItem('nameList', JSON.stringify(nameList))
-//     localStorage.setItem('nameTask', JSON.stringify(nameTasks))
-//   }, [ nameList, nameTasks]);
-
-//   useEffect(() => {
-//     const retrieveLists = JSON.parse(localStorage.getItem('nameList') || "")
-//     const retrieveTasks = JSON.parse(localStorage.getItem('nameTask') || "")
-//     setNameList(retrieveLists)
-//     setNameTasks(retrieveTasks)
-//     console.log(nameList)
-//     console.log(nameTasks)
-//   }, []);
-
-//   function onChange(e: ChangeEvent<HTMLInputElement>) {
-//     setLists({
-//       ...lists,
-//       [e.target.name]: e.target.value
-//     })
-//   }
-
-//   const creatList = (e: MouseEvent<HTMLButtonElement>) => {
-//     e.preventDefault()
-//     const retrieveLists = JSON.parse(localStorage.getItem('nameList')!)
-//     const retrieveTasks = JSON.parse(localStorage.getItem('nameTask')!)
-//     setNameList(retrieveLists)
-//     setNameTasks(retrieveTasks)
-
-//   }
-
-//   const createTask = (e: MouseEvent<HTMLButtonElement>) => {
-//     e.preventDefault();
-//     console.log(nameTasks)
-
-//   }
-
-//   return (
-//     <>
-//       <Header />
-//       <Container>
-//         <h2 className="text">Criar Lista</h2>
-//         <Form className={""} noValidate autoComplete="off">
-//           <TextField
-//             name="nameList"
-//             placeholder="Digite o nome da lista..."
-//             variant="outlined"
-//             onChange={onChange}
-//           />
-//           <TextField
-//             name="nameTask"
-//             placeholder="Adicionar tarefa"
-//             variant="outlined"
-//             onChange={onChange}
-//             InputProps={{
-//               endAdornment: (
-//                 <button className="btn" onClick={createTask}>
-//                   <img src={adicionar} alt="imagem de adicionar" />
-//                 </button>
-//               ),
-//             }}
-//           />
-//         </Form>
-
-//         <ContentBtn>
-//           <Btn color="greeny">Cancelar</Btn>
-//           <Btn color="orange" onClick={creatList}>Criar Lista</Btn>
-//         </ContentBtn>
-
-//         <TextField
-//           value={lists.nameList}
-//           InputProps={{
-//             endAdornment: (
-//               <>
-//                 <button className="btn" >
-//                   <img src={editar} alt="imagem de adicionar" />
-//                 </button>
-//                 <button className="btn" >
-//                   <img src={excluir_lista} alt="imagem de adicionar" />
-//                 </button>
-//               </>
-//             ),
-//             startAdornment: (
-//               <button className="btn" >
-//                 <img src={icone_lista} alt="imagem de adicionar" />
-//               </button>
-//             )
-//           }}
-//         />
-//         <TextField
-//           value={lists.nameTask}
-//           InputProps={{
-//             endAdornment: (
-//               <button className="btn" onClick={createTask}>
-//                 <img src={excluir_lista} alt="imagem de adicionar" />
-//               </button>
-//             ),
-//           }}
-//         />
-
-//       </Container>
-//     </>
-//   )
-// }

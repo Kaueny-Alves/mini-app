@@ -1,6 +1,4 @@
-import { TextField } from "@material-ui/core";
-import { useState } from "react";
-import * as React from "react";
+import React, { useState } from "react";
 import { Header } from "../../components/Header";
 import { Tasks } from "./Tasks";
 import { SubTasks } from "./SubTasks";
@@ -26,11 +24,11 @@ export function Lists() {
       nameList: "Lista 1",
       tasks: [
         {
-          id: "1",
+          id: "1.1",
           nameTask: "Tarefa 1",
           subTarefa: [
             {
-              id: "1",
+              id: "1.1.1",
               Subtarefa: "Subtarefa 1",
             },
             {
@@ -53,22 +51,11 @@ export function Lists() {
     {
       id: "3",
       nameList: "Lista 3",
-      tasks: [
-        {
-          id: "",
-          nameTask: "",
-          subTarefa: [
-            {
-              id: "",
-              Subtarefa: "",
-            },
-          ],
-        },
-      ],
+      tasks: [{}],
     },
   ]);
 
-  const handleCancelButton = (id) => {
+  const deleteButton = (id) => {
     console.log("clicou")
   };
 
@@ -95,8 +82,8 @@ export function Lists() {
         {lists &&
           lists.map((list) => {
             return (
-              <ContainerList>
-                <ContentList>
+              <ContainerList key ={list.id}>
+                <ContentList >
                   <div>
                     <button className="btn">
                       <img src={icone_lista} alt="adicionar" />
@@ -128,7 +115,7 @@ export function Lists() {
                         src={excluir_lista}
                         alt="excluir"
                         onClick={() => {
-                          handleCancelButton(list.id);
+                          deleteButton(list.id);
                         }}
                       />
                     </button>
@@ -146,7 +133,7 @@ export function Lists() {
                     <>
                       {task.nameTask ? (
                         <>
-                          <ContentList>
+                          <ContentList key={task.id}>
                             <div className="tasks">
                               <input
                                 type="checkbox"
@@ -157,7 +144,7 @@ export function Lists() {
                             </div>
                             <ContentBtn>
                               <button className="btn">
-                                <img src={excluir_tarefa} alt="excluir"  onClick={()=>{handleCancelButton(task.id)}}/>
+                                <img src={excluir_tarefa} alt="excluir"  onClick={()=>{deleteButton(task.id)}}/>
                               </button>
                             </ContentBtn>
                           </ContentList>
@@ -165,11 +152,12 @@ export function Lists() {
                             {task.subTarefa &&
                               task.subTarefa.map((sub) => (
                                 <SubTasks
+                                key={sub.id}
                                   value={sub.id}
                                   textList={sub.Subtarefa}
                                   src={excluir_tarefa}
                                   alt="excluir"
-                                  onClick={()=>{handleCancelButton(sub.id)}}
+                                  onClick={()=>{deleteButton(sub.id)}}
                                 />
                               ))}
                             {status && (

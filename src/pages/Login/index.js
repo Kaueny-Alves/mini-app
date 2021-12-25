@@ -1,4 +1,4 @@
-import { useState, MouseEvent } from 'react';
+import React, { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import marcaImg from "../../assets/marca_mini_app.png";
 import setaImg from "../../assets/seta.png";
