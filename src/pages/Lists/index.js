@@ -18,6 +18,7 @@ import { Link } from "react-router-dom";
 
 export function Lists() {
   const [status, setStatus] = useState(false);
+  const [novaLista, setNovaLista] = useState([]);
   const [lists, setLists] = useState([
     {
       id: "1",
@@ -43,28 +44,44 @@ export function Lists() {
         },
       ],
     },
-    {
-      id: "2",
-      nameList: "Lista 2",
-      tasks: [{}],
-    },
-    {
-      id: "3",
-      nameList: "Lista 3",
-      tasks: [{}],
-    },
+    // {
+    //   id: "2",
+    //   nameList: "Lista 2",
+    //   tasks: [{}],
+    // },
+    // {
+    //   id: "3",
+    //   nameList: "Lista 3",
+    //   tasks: [{}],
+    // },
   ]);
 
-  const deleteButton = (id) => {
-    console.log("clicou")
-  };
+const deleteList = (id) => {
+  const newList = lists.filter((item) => {
+    return item.id !== id;
+  });
+  setLists(newList);
+  localStorage.setItem("lists", JSON.stringify(newList));
+  console.log("deletou", newList);
+};
 
-  const handleEditButton = (id) => {
-    if (status) {
-      setStatus(false);
-    } else {
-      setStatus(true);
-    }
+const deleteTask = (id) => {
+  const newTask = lists.tasks.filter((item) => {
+    return item.id !== id;
+  });
+  setLists([
+    ...lists,
+    {
+      
+      tasks: [{ newTask }],
+    },
+  ]);
+  localStorage.setItem("lists", JSON.stringify(lists));
+  console.log("deletou", newTask);
+};
+
+const handleEditButton = (id) => {
+    status ? setStatus(false) : setStatus(true);
   };
 
   return (
@@ -82,7 +99,7 @@ export function Lists() {
         {lists &&
           lists.map((list) => {
             return (
-              <ContainerList key ={list.id}>
+              <ContainerList key={list.id}>
                 <ContentList >
                   <div>
                     <button className="btn">
@@ -91,9 +108,11 @@ export function Lists() {
                     <span>
                       {status ? (
                         <Tasks
+                          InputProps={{
+                          disableUnderline: true}}
                           placeholder={list.nameList}
                           name="nameList"
-                          onClick
+                          
                         />
                       ) : (
                         list.nameList
@@ -115,7 +134,7 @@ export function Lists() {
                         src={excluir_lista}
                         alt="excluir"
                         onClick={() => {
-                          deleteButton(list.id);
+                          deleteList(list.id);
                         }}
                       />
                     </button>
@@ -123,9 +142,11 @@ export function Lists() {
                 </ContentList>
                 {status && (
                   <Tasks
+                  InputProps={{
+                    disableUnderline: true}}
                     placeholder="Adicionar tarefa"
                     name="addTasks"
-                    onClick
+                    
                   />
                 )}
                 {list.tasks &&
@@ -134,7 +155,7 @@ export function Lists() {
                       {task.nameTask ? (
                         <>
                           <ContentList key={task.id}>
-                            <div className="tasks">
+                            <div  className="tasks">
                               <input
                                 type="checkbox"
                                 value={task.id}
@@ -144,7 +165,13 @@ export function Lists() {
                             </div>
                             <ContentBtn>
                               <button className="btn">
-                                <img src={excluir_tarefa} alt="excluir"  onClick={()=>{deleteButton(task.id)}}/>
+                                <img
+                                  src={excluir_tarefa}
+                                  alt="excluir"
+                                  onClick={() => {
+                                    
+                                  }}
+                                />
                               </button>
                             </ContentBtn>
                           </ContentList>
@@ -152,18 +179,22 @@ export function Lists() {
                             {task.subTarefa &&
                               task.subTarefa.map((sub) => (
                                 <SubTasks
-                                key={sub.id}
+                                  key={sub.id}
                                   value={sub.id}
                                   textList={sub.Subtarefa}
                                   src={excluir_tarefa}
                                   alt="excluir"
-                                  onClick={()=>{deleteButton(sub.id)}}
+                                  onClick={() => {
+                                    
+                                  }}
                                 />
                               ))}
                             {status && (
                               <Tasks
                                 placeholder="Adicionar subtarefa"
                                 name="addSubTasks"
+                                InputProps={{
+                                  disableUnderline: true}}
                               />
                             )}
                           </ul>
