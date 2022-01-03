@@ -84,8 +84,9 @@ export const Form = styled.form`
   align-content: center;
   padding-top: 20px;
   justify-content: space-around;
-  height: 150px;
+  max-height: 300px;
   width: 600px;
+  overflow-y: auto;
   @media (max-width: 720) {
   }
 `;

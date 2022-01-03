@@ -14,13 +14,7 @@ import * as yup from "yup";
 
 export function CreateLists() {
   const navigate = useNavigate();
-  const [lists, setLists] = useState([
-    {
-      id: "",
-      list: "",
-      tasks: [""],
-    },
-  ]);
+  const [lists, setLists] = useState([]);
   const [nameList, setNameList] = useState([]);
   const [nameTasks, setNameTasks] = useState([""]);
   const [status, setStatus] = useState(false);
@@ -55,7 +49,7 @@ export function CreateLists() {
             tasks: nameTasks.map((item) => item),
           },
         ]);
-        navigate("/lists");
+        // navigate("/lists");
       } else {
         setStatus("error");
       }
@@ -150,69 +144,82 @@ export function CreateLists() {
             Criar Lista
           </Btn>
         </ContentBtn>
-
-        {lists.length > 0
-          ? lists.map((item, index) => {
-              return (
-                <div
-                  key={index}
-                  style={{ display: "flex", flexDirection: "column" }}
-                >
-                  <TextField
-                    value={item.list}
-                    InputProps={{
-                      endAdornment: (
-                        <>
-                          <button className="btn">
-                            <img
-                              src={editar}
-                              alt="editar"
-                              onClick={() => {
-                                editButton(item.id);
-                              }}
-                            />
-                          </button>
-                          <button className="btn">
-                            <img
-                              src={excluir_lista}
-                              alt="excluir"
-                              onClick={() => {
-                                deleteList(item.id);
-                              }}
-                            />
-                          </button>
-                        </>
-                      ),
-                      startAdornment: (
-                        <button className="btn">
-                          <img src={icone_lista} alt="icone lista" />
-                        </button>
-                      ),
-                    }}
-                  />
-                  {item.tasks.length > 0 &&
-                    item.tasks.map((item, index) => (
-                      <TextField
-                        key={index}
-                        value={item}
-                        InputProps={{
-                          endAdornment: (
-                            <button
-                              className="btn"
-                              onClick={() => {
-                                deleteTask(index);
-                              }}
-                            >
-                              <img src={excluir_tarefa} alt="excluir" />
+        <Container>
+          {lists.length > 0
+            ? lists.map((item, index) => {
+                return (
+                  <div
+                    key={index}
+                    style={{ display: "flex", flexDirection: "column" }}
+                  >
+                    <TextField
+                      value={item.list}
+                      InputProps={{
+                        endAdornment: (
+                          <>
+                            <button className="btn">
+                              <img
+                                src={editar}
+                                alt="editar"
+                                onClick={() => {
+                                  editButton(item.id);
+                                }}
+                              />
                             </button>
-                          ),
-                        }}
-                      />
-                    ))}
-                </div>
-              );
-            })
-          : ""}
+                            <button className="btn">
+                              <img
+                                src={excluir_lista}
+                                alt="excluir"
+                                onClick={() => {
+                                  deleteList(item.id);
+                                }}
+                              />
+                            </button>
+                          </>
+                        ),
+                        startAdornment: (
+                          <button className="btn">
+                            <img src={icone_lista} alt="icone lista" />
+                          </button>
+                        ),
+                      }}
+                    />
+                  
+                      {item.tasks.length > 0 &&
+                        item.tasks.map((item, index) => (
+                          <TextField
+                            key={index}
+                            value={item}
+                            InputProps={{
+                              startAdornment: (
+                                <div className="btn">
+                                  <input
+                                    type="checkbox"
+                                    value={item}
+                                    color="green"
+                                    className="sub"
+                                  />
+                                </div>
+                              ),
+                              endAdornment: (
+                                <button
+                                  className="btn"
+                                  onClick={() => {
+                                    deleteTask(index);
+                                  }}
+                                >
+                                  <img src={excluir_tarefa} alt="excluir" />
+                                </button>
+                              ),
+                            }}
+                          />
+                        ))}
+                  
+                  </div>
+                );
+              })
+            : ""}
+        </Container>
       </Container>
     </>
   );
