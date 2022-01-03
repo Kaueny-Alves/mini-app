@@ -1,6 +1,5 @@
 import React from "react";
 import TextField from "@material-ui/core/TextField";
-import adicionar from "../../assets/adicionar.png";
 import { makeStyles } from "@material-ui/core/styles";
 
 
@@ -17,24 +16,29 @@ const useStyles = makeStyles((theme) => ({
     "& .MuiTextField-root": {
       margin: theme.spacing(1),
       width: "25ch",
-    }
-  }
+    },
+  },
 }));
 
-export function Tasks({ placeholder, name, onClick, value, onChange, InputProps }) {
+export function Tasks({
+  placeholder,
+  name,
+  onClick,
+  value,
+  onChange,
+  InputProps,
+}) {
   const classes = useStyles();
 
   return (
     <div>
       <TextField
-        className={classes.root}
-        required={true}
         value={value}
+        className={classes.root}
         name={name}
         onChange={onChange}
         placeholder={placeholder}
         InputProps={InputProps}
-        onClick={onClick}
       />
     </div>
   );

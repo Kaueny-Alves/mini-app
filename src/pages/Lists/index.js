@@ -44,16 +44,16 @@ export function Lists() {
         },
       ],
     },
-    // {
-    //   id: "2",
-    //   nameList: "Lista 2",
-    //   tasks: [{}],
-    // },
-    // {
-    //   id: "3",
-    //   nameList: "Lista 3",
-    //   tasks: [{}],
-    // },
+    {
+      id: "2",
+      nameList: "Lista 2",
+      tasks: [{}],
+    },
+    {
+      id: "3",
+      nameList: "Lista 3",
+      tasks: [{}],
+    },
   ]);
 
 const deleteList = (id) => {
@@ -65,24 +65,21 @@ const deleteList = (id) => {
   console.log("deletou", newList);
 };
 
-const deleteTask = (id) => {
+const deleteTask = (index) => {
   const newTask = lists.tasks.filter((item) => {
-    return item.id !== id;
+    return item !== index;
   });
   setLists([
     ...lists,
-    {
-      
-      tasks: [{ newTask }],
-    },
+    {tasks: [{ newTask }]},
   ]);
   localStorage.setItem("lists", JSON.stringify(lists));
   console.log("deletou", newTask);
 };
 
-const handleEditButton = (id) => {
-    status ? setStatus(false) : setStatus(true);
-  };
+function editButton(id) {
+  setStatus(!status);
+};
 
   return (
     <>
@@ -97,10 +94,10 @@ const handleEditButton = (id) => {
           </Link>
         </ContentTitle>
         {lists &&
-          lists.map((list) => {
+          lists.map((list, index) => {
             return (
-              <ContainerList key={list.id}>
-                <ContentList >
+              <ContainerList key={index}>
+                <ContentList>
                   <div>
                     <button className="btn">
                       <img src={icone_lista} alt="adicionar" />
@@ -125,7 +122,7 @@ const handleEditButton = (id) => {
                         src={editar}
                         alt="editar"
                         onClick={() => {
-                          handleEditButton(list.id);
+                          editButton(list.id);
                         }}
                       />
                     </button>
@@ -150,10 +147,10 @@ const handleEditButton = (id) => {
                   />
                 )}
                 {list.tasks &&
-                  list.tasks.map((task) => (
-                    <>
+                  list.tasks.map((task, index) => (
+                    <div key={index}>
                       {task.nameTask ? (
-                        <>
+                        <div key={index}>
                           <ContentList key={task.id}>
                             <div  className="tasks">
                               <input
@@ -198,11 +195,11 @@ const handleEditButton = (id) => {
                               />
                             )}
                           </ul>
-                        </>
+                        </div>
                       ) : (
                         ""
                       )}
-                    </>
+                    </div>
                   ))}
               </ContainerList>
             );

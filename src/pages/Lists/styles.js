@@ -21,7 +21,6 @@ export const Container = styled.div`
     list-style: none;
     padding-left: 10px;
     color: #574437;
-   
   }
   input {
     -moz-appearance: none;
@@ -56,7 +55,8 @@ export const ContentList = styled.div`
   flex-direction: row;
   justify-content: space-between;
 
-  p, span {
+  p,
+  span {
     padding-left: 10px;
     color: #574437;
   }
@@ -66,9 +66,7 @@ export const ContentList = styled.div`
     border-bottom: 1px solid var(--green);
     width: 700px;
     margin-left: 15px;
-    
   }
-
 `;
 
 export const ContainerList = styled.div`
@@ -93,14 +91,14 @@ export const Form = styled.form`
 `;
 
 export const ContentBtn = styled.div`
-   display: flex;
-   align-items: center;
-   justify-content: space-between;
-   margin-right: 30px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-right: 30px;
 `;
 
 export const ContentSub = styled.div`
- padding: 5px 0px 0px 5px;
+  padding: 5px 0px 0px 5px;
   display: flex;
   flex-direction: row;
   justify-content: space-between;
@@ -108,9 +106,10 @@ export const ContentSub = styled.div`
   .sub-tasks {
     display: flex;
     margin-left: 30px;
-    
   }
-  
 `;
 
-
+export const Error = styled.span`
+  padding: 10px;
+  color: var(--brown);
+`;
