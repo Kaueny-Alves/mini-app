@@ -60,13 +60,9 @@ export const ContentList = styled.div`
     padding-left: 10px;
     color: #574437;
   }
+ 
 
-  .tasks {
-    display: flex;
-    border-bottom: 1px solid var(--green);
-    width: 700px;
-    margin-left: 15px;
-  }
+ 
 `;
 
 export const ContainerList = styled.div`

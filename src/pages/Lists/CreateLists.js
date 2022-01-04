@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { Btn } from "../../global";
-import { Link, useNavigate } from "react-router-dom";
+import { Link } from "react-router-dom";
 import { Container, ContentBtn, Form, Error } from "./styles";
 import adicionar from "../../assets/adicionar.png";
 import icone_lista from "../../assets/icone_lista.png";
@@ -13,7 +13,6 @@ import { Tasks } from "./Tasks";
 import * as yup from "yup";
 
 export function CreateLists() {
-  const navigate = useNavigate();
   const [lists, setLists] = useState([]);
   const [nameList, setNameList] = useState([]);
   const [nameTasks, setNameTasks] = useState([""]);
@@ -49,7 +48,6 @@ export function CreateLists() {
             tasks: nameTasks.map((item) => item),
           },
         ]);
-        // navigate("/lists");
       } else {
         setStatus("error");
       }
@@ -106,6 +104,7 @@ export function CreateLists() {
         <Form>
           <Tasks
             id="list"
+            label="Digite o nome da lista..."
             placeholder="Digite o nome da lista..."
             variant="outlined"
             onChange={(e) => {
@@ -116,6 +115,7 @@ export function CreateLists() {
 
           {nameTasks.map((task, index) => (
             <Tasks
+              label={`Adicionar tarefa ${index + 1}`}
               key={index}
               id={`task${index + 1}`}
               name="task"
@@ -184,37 +184,36 @@ export function CreateLists() {
                         ),
                       }}
                     />
-                  
-                      {item.tasks.length > 0 &&
-                        item.tasks.map((item, index) => (
-                          <TextField
-                            key={index}
-                            value={item}
-                            InputProps={{
-                              startAdornment: (
-                                <div className="btn">
-                                  <input
-                                    type="checkbox"
-                                    value={item}
-                                    color="green"
-                                    className="sub"
-                                  />
-                                </div>
-                              ),
-                              endAdornment: (
-                                <button
-                                  className="btn"
-                                  onClick={() => {
-                                    deleteTask(index);
-                                  }}
-                                >
-                                  <img src={excluir_tarefa} alt="excluir" />
-                                </button>
-                              ),
-                            }}
-                          />
-                        ))}
-                  
+
+                    {item.tasks.length > 0 &&
+                      item.tasks.map((item, index) => (
+                        <TextField
+                          key={index}
+                          value={item}
+                          InputProps={{
+                            startAdornment: (
+                              <div className="btn">
+                                <input
+                                  type="checkbox"
+                                  value={item}
+                                  color="green"
+                                  className="sub"
+                                />
+                              </div>
+                            ),
+                            endAdornment: (
+                              <button
+                                className="btn"
+                                onClick={() => {
+                                  deleteTask(index);
+                                }}
+                              >
+                                <img src={excluir_tarefa} alt="excluir" />
+                              </button>
+                            ),
+                          }}
+                        />
+                      ))}
                   </div>
                 );
               })

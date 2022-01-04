@@ -1,7 +1,7 @@
 import React from "react";
 import TextField from "@material-ui/core/TextField";
-import { makeStyles } from "@material-ui/core/styles";
-
+import { makeStyles, ThemeProvider, createTheme } from "@material-ui/core/styles";
+import { orange } from '@material-ui/core/colors';
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -20,6 +20,12 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
+const theme = createTheme({
+  palette: {
+    primary: orange,
+  },
+});
+
 export function Tasks({
   placeholder,
   name,
@@ -27,12 +33,14 @@ export function Tasks({
   value,
   onChange,
   InputProps,
+  label,
 }) {
   const classes = useStyles();
 
   return (
-    <div>
+     <ThemeProvider theme={theme}>
       <TextField
+        label={label}
         value={value}
         className={classes.root}
         name={name}
@@ -40,6 +48,6 @@ export function Tasks({
         placeholder={placeholder}
         InputProps={InputProps}
       />
-    </div>
+    </ThemeProvider>
   );
 }

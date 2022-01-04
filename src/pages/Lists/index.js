@@ -1,7 +1,16 @@
 import React, { useState } from "react";
 import { Header } from "../../components/Header";
 import { Tasks } from "./Tasks";
-import { SubTasks } from "./SubTasks";
+import { makeStyles, withStyles } from "@material-ui/core/styles";
+import { green } from "@material-ui/core/colors";
+import Grid from "@material-ui/core/Grid";
+import List from "@material-ui/core/List";
+import CardHeader from "@material-ui/core/CardHeader";
+import ListItem from "@material-ui/core/ListItem";
+import ListItemText from "@material-ui/core/ListItemText";
+import ListItemIcon from "@material-ui/core/ListItemIcon";
+import Checkbox from "@material-ui/core/Checkbox";
+import Divider from "@material-ui/core/Divider";
 import icone_lista from "../../assets/icone_lista.png";
 import adicionar from "../../assets/adicionar.png";
 import editar from "../../assets/icone_editar.png";
@@ -13,73 +22,217 @@ import {
   ContentList,
   ContainerList,
   ContentBtn,
+  ContentSub,
 } from "./styles";
 import { Link } from "react-router-dom";
 
+
+const GreenCheckbox = withStyles({
+  root: {
+    color: green[400],
+    "&$checked": {
+      color: green[600],
+    },
+  },
+  checked: {},
+})((props) => <Checkbox color="default" {...props} />);
+
+const useStyles = makeStyles((theme) => ({
+  root: {
+    margin: "auto",
+    overflow: "auto",
+  },
+  cardHeader: {
+    padding: theme.spacing(1, 2),
+  },
+  list: {
+    width: 350,
+    height: 40,
+  },
+  button: {
+    margin: theme.spacing(0.5, 0),
+  },
+}));
+
+function not(a, b) {
+  return a.filter((value) => b.indexOf(value) === -1);
+}
+
+function intersection(a, b) {
+  return a.filter((value) => b.indexOf(value) !== -1);
+}
+
+function union(a, b) {
+  return [...a, ...not(b, a)];
+}
+
 export function Lists() {
+  const classes = useStyles();
+  const [checked, setChecked] = useState([]);
   const [status, setStatus] = useState(false);
-  const [novaLista, setNovaLista] = useState([]);
+  const [nameList, setNameList] = useState([]);
+  const [nameTasks, setNameTasks] = useState([""]);
   const [lists, setLists] = useState([
     {
       id: "1",
-      nameList: "Lista 1",
+      nameList: ["Lista 1"],
       tasks: [
         {
-          id: "1.1",
-          nameTask: "Tarefa 1",
-          subTarefa: [
-            {
-              id: "1.1.1",
-              Subtarefa: "Subtarefa 1",
-            },
-            {
-              id: "2",
-              Subtarefa: "Subtarefa 2",
-            },
-            {
-              id: "3",
-              Subtarefa: "Subtarefa 3",
-            },
-          ],
+          nameTask: ["Tarefa 1"],
+          subTarefa: ["Subtarefa 1", "Subtarefa 2", "Subtarefa 3"],
         },
       ],
     },
     {
       id: "2",
-      nameList: "Lista 2",
-      tasks: [{}],
+      nameList: ["Lista 2"],
+      tasks: [],
     },
     {
       id: "3",
-      nameList: "Lista 3",
-      tasks: [{}],
+      nameList: ["Lista 3"],
+      tasks: [],
     },
   ]);
 
-const deleteList = (id) => {
-  const newList = lists.filter((item) => {
-    return item.id !== id;
-  });
-  setLists(newList);
-  localStorage.setItem("lists", JSON.stringify(newList));
-  console.log("deletou", newList);
-};
+  const handleToggle = (value) => () => {
+    const currentIndex = checked.indexOf(value);
+    const newChecked = [...checked];
 
-const deleteTask = (index) => {
-  const newTask = lists.tasks.filter((item) => {
-    return item !== index;
-  });
-  setLists([
-    ...lists,
-    {tasks: [{ newTask }]},
-  ]);
-  localStorage.setItem("lists", JSON.stringify(lists));
-  console.log("deletou", newTask);
-};
+    if (currentIndex === -1) {
+      newChecked.push(value);
+    } else {
+      newChecked.splice(currentIndex, 1);
+    }
 
-function editButton(id) {
-  setStatus(!status);
-};
+    setChecked(newChecked);
+  };
+
+  const numberOfChecked = (items) => intersection(checked, items).length;
+
+  const handleToggleAll = (items) => () => {
+    if (numberOfChecked(items) === items.length) {
+      setChecked(not(checked, items));
+    } else {
+      setChecked(union(checked, items));
+    }
+  };
+
+  // async function createList(e) {
+  //   e.preventDefault();
+  //   let uuid = Math.random() * 10;
+
+  //   setLists([
+  //     ...lists,
+  //     {
+  //       id: uuid,
+  //       nameList: nameList,
+  //       tasks: nameTasks.map((item) => item),
+  //     },
+  //   ]);
+  // }
+
+  const deleteList = (id) => {
+    const newList = lists.filter((item) => {
+      return item.id !== id;
+    });
+    setLists(newList);
+
+    console.log("deletou", newList);
+  };
+
+  // const deleteTask = (index) => {
+  //   const newTask = lists.tasks.filter((_, item) => {
+  //     return item !== index;
+  //   });
+  //   setLists([...lists, { tasks: [{ newTask }] }]);
+
+  //   console.log("deletou", newTask);
+  // };
+
+  function editButton(id) {
+    lists.filter((item) => {
+      return item.id === id;
+      setStatus(!status);
+    });
+    setStatus(!status);
+  }
+
+  const customList = (title, items) => (
+    <div>
+      <ContentSub className="sub-task">
+        <CardHeader
+          className={classes.cardHeader}
+          avatar={
+            <GreenCheckbox
+              color="default"
+              onClick={handleToggleAll(items)}
+              checked={
+                numberOfChecked(items) === items.length && items.length !== 0
+              }
+              indeterminate={
+                numberOfChecked(items) !== items.length &&
+                numberOfChecked(items) !== 0
+              }
+              disabled={items.length === 0}
+              inputProps={{ "aria-label": "all items selected" }}
+            />
+          }
+          title={title}
+        />
+        <ContentBtn>
+          <button className="btn">
+            <img src={excluir_tarefa} alt="excluir"  />
+          </button>
+        </ContentBtn>
+      </ContentSub>
+      <Divider />
+      {items.map((value, index) => {
+        const labelId = `transfer-list-all-item-${value}-label`;
+        return (
+          <ContentSub key={index}>
+            <div className="sub-tasks">
+              <List className={classes.list} dense component="div" role="list">
+                <ListItem
+                  key={value}
+                  role="listitem"
+                  button
+                  onClick={handleToggle(value)}
+                >
+                  <ListItemIcon>
+                    <GreenCheckbox
+                      color="default"
+                      checked={checked.indexOf(value) !== -1}
+                      tabIndex={-1}
+                      disableRipple
+                      inputProps={{
+                        "aria-labelledby": labelId,
+                      }}
+                    />
+                  </ListItemIcon>
+                  <ListItemText id={labelId} primary={value} />
+                </ListItem>
+              </List>
+              <ContentBtn>
+                <button className="btn">
+                  <img src={excluir_tarefa} alt="excluir" onClick={() => {}} />
+                </button>
+              </ContentBtn>
+            </div>
+          </ContentSub>
+        );
+      })}
+      {status && (
+        <Tasks
+          placeholder="Adicionar subtarefa"
+          name="addSubTasks"
+          InputProps={{
+            disableUnderline: true,
+          }}
+        />
+      )}
+    </div>
+  );
 
   return (
     <>
@@ -106,10 +259,10 @@ function editButton(id) {
                       {status ? (
                         <Tasks
                           InputProps={{
-                          disableUnderline: true}}
+                            disableUnderline: true,
+                          }}
                           placeholder={list.nameList}
                           name="nameList"
-                          
                         />
                       ) : (
                         list.nameList
@@ -139,62 +292,34 @@ function editButton(id) {
                 </ContentList>
                 {status && (
                   <Tasks
-                  InputProps={{
-                    disableUnderline: true}}
+                    InputProps={{
+                      disableUnderline: true,
+                    }}
                     placeholder="Adicionar tarefa"
                     name="addTasks"
-                    
                   />
                 )}
                 {list.tasks &&
                   list.tasks.map((task, index) => (
                     <div key={index}>
                       {task.nameTask ? (
-                        <div key={index}>
-                          <ContentList key={task.id}>
-                            <div  className="tasks">
-                              <input
-                                type="checkbox"
-                                value={task.id}
-                                className="sub"
-                              />
-                              <p>{task.nameTask}</p>
+                        <div>
+                          <ContentSub>
+                            <div>
+                              <Grid
+                                container
+                                spacing={2}
+                                justifyContent="center"
+                                alignItems="center"
+                                className={classes.root}
+                              >
+                                <Grid item>
+                                  {customList(task.nameTask, task.subTarefa)}
+                                </Grid>
+                              </Grid>
                             </div>
-                            <ContentBtn>
-                              <button className="btn">
-                                <img
-                                  src={excluir_tarefa}
-                                  alt="excluir"
-                                  onClick={() => {
-                                    
-                                  }}
-                                />
-                              </button>
-                            </ContentBtn>
-                          </ContentList>
-                          <ul className="separator">
-                            {task.subTarefa &&
-                              task.subTarefa.map((sub) => (
-                                <SubTasks
-                                  key={sub.id}
-                                  value={sub.id}
-                                  textList={sub.Subtarefa}
-                                  src={excluir_tarefa}
-                                  alt="excluir"
-                                  onClick={() => {
-                                    
-                                  }}
-                                />
-                              ))}
-                            {status && (
-                              <Tasks
-                                placeholder="Adicionar subtarefa"
-                                name="addSubTasks"
-                                InputProps={{
-                                  disableUnderline: true}}
-                              />
-                            )}
-                          </ul>
+                          </ContentSub>
+                          <ul className="separator"></ul>
                         </div>
                       ) : (
                         ""
